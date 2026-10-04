@@ -1,0 +1,153 @@
+# Sveltia CMS: https://sveltiacms.app
+# Lokaal: open http://localhost:4321/admin/ in Chrome/Edge en kies
+# "Work with Local Repository" → selecteer de map van deze repo.
+# Online: vul `repo` en `base_url` (de Sveltia CMS Authenticator, een gratis
+# Cloudflare Worker) in. Zie README.
+backend:
+  name: github
+  repo: tkkrlab/website # TODO: echte repo
+  branch: main
+  # base_url: https://sveltia-cms-auth.<account>.workers.dev
+
+media_folder: /public/images
+public_folder: /images
+
+site_url: https://tkkrlab.nl
+display_url: https://tkkrlab.nl
+locale: nl
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+# Velden die in meerdere collecties terugkomen.
+_dated_fields: &dated_fields
+  - { name: title, label: Titel, widget: string }
+  - name: date
+    label: Datum
+    widget: datetime
+    time_format: false
+    format: YYYY-MM-DD
+    default: '{{now}}'
+  - { name: excerpt, label: Samenvatting, widget: text, required: false, hint: Korte tekst voor overzichtspagina’s }
+  - { name: coverImage, label: Uitgelichte afbeelding, widget: image, required: false }
+  - { name: body, label: Inhoud, widget: richtext }
+
+_link: &link
+  - { name: label, label: Tekst, widget: string }
+  - { name: href, label: Link, widget: string }
+
+collections:
+  - name: posts
+    label: Blog
+    label_singular: Blogbericht
+    folder: /src/content/posts
+    format: mdoc # custom format, registered in src/pages/admin/index.astro
+    create: true
+    slug: '{{slug}}'
+    summary: '{{title}} ({{date}})'
+    sortable_fields: { fields: [date, title], default: { field: date, direction: descending } }
+    media_folder: /public/images/posts/{{slug}}
+    public_folder: /images/posts/{{slug}}
+    fields: *dated_fields
+
+  - name: projects
+    label: Projecten
+    label_singular: Project
+    folder: /src/content/projects
+    format: mdoc # custom format, registered in src/pages/admin/index.astro
+    create: true
+    slug: '{{slug}}'
+    sortable_fields: { fields: [date, title], default: { field: date, direction: descending } }
+    media_folder: /public/images/projects/{{slug}}
+    public_folder: /images/projects/{{slug}}
+    fields: *dated_fields
+
+  - name: tools
+    label: Gereedschap
+    label_singular: Machine
+    folder: /src/content/tools
+    format: mdoc # custom format, registered in src/pages/admin/index.astro
+    create: true
+    slug: '{{slug}}'
+    sortable_fields: { fields: [title], default: { field: title, direction: ascending } }
+    media_folder: /public/images/tools/{{slug}}
+    public_folder: /images/tools/{{slug}}
+    fields: *dated_fields
+
+  - name: cybersaturdays
+    label: Cybersaturdays
+    label_singular: Cybersaturday
+    folder: /src/content/cybersaturdays
+    format: mdoc # custom format, registered in src/pages/admin/index.astro
+    create: true
+    slug: '{{slug}}'
+    media_folder: /public/images/cybersaturdays/{{slug}}
+    public_folder: /images/cybersaturdays/{{slug}}
+    fields: *dated_fields
+
+  - name: pages
+    label: Pagina’s
+    label_singular: Pagina
+    folder: /src/content/pages
+    format: mdoc # custom format, registered in src/pages/admin/index.astro
+    create: true
+    slug: '{{slug}}'
+    media_folder: /public/images/pages/{{slug}}
+    public_folder: /images/pages/{{slug}}
+    fields:
+      - { name: title, label: Titel, widget: string }
+      - { name: description, label: Omschrijving (SEO), widget: text, required: false }
+      - name: listing
+        label: Overzicht onder de tekst
+        hint: Toon automatisch een lijst van items onder deze pagina
+        widget: select
+        default: none
+        required: false
+        options:
+          - { label: Geen, value: none }
+          - { label: Blog, value: posts }
+          - { label: Projecten, value: projects }
+          - { label: Gereedschap, value: tools }
+          - { label: Cybersaturdays, value: cybersaturdays }
+      - { name: body, label: Inhoud, widget: richtext }
+
+singletons:
+  - name: home
+    label: Homepage
+    file: /src/data/home.yaml
+    media_folder: /public/images/home
+    public_folder: /images/home
+    fields:
+      - { name: heroTitle, label: Titel, widget: string }
+      - { name: heroImage, label: Achtergrondfoto, widget: image }
+      - { name: heroButton, label: Knop, widget: object, fields: *link }
+      - name: sections
+        label: Secties
+        widget: list
+        summary: '{{fields.title}}'
+        fields:
+          - { name: title, label: Titel, widget: string }
+          - { name: body, label: Tekst, widget: text, hint: Lege regel = nieuwe alinea }
+          - { name: image, label: Afbeelding, widget: image, required: false }
+          - { name: dark, label: Donkere achtergrond, widget: boolean, default: false }
+          - { name: buttons, label: Knoppen, widget: list, summary: '{{fields.label}}', fields: *link }
+
+  - name: settings
+    label: Site-instellingen
+    file: /src/data/settings.yaml
+    fields:
+      - name: navigation
+        label: Menu
+        widget: list
+        summary: '{{fields.label}}'
+        fields:
+          - { name: label, label: Tekst, widget: string }
+          - { name: href, label: Link, widget: string }
+          - { name: children, label: Submenu, widget: list, required: false, summary: '{{fields.label}}', fields: *link }
+      - { name: address, label: Adres (footer), widget: text }
+      - { name: email, label: E-mail, widget: string }
+      - { name: phone, label: Telefoon, widget: string }
+      - { name: newsletterUrl, label: Aanmeldlink nieuwsbrief, widget: string }
+      - { name: socials, label: Socials, widget: list, summary: '{{fields.label}}', fields: *link }
+      - { name: spaceApiUrl, label: SpaceAPI URL, widget: string, hint: Voor de open/dicht status in de header }

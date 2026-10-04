@@ -69,6 +69,25 @@ Elke opslag is dan een commit. Laat CI (bijv. een GitHub Action) bij elke push
 `npm run build` draaien en `dist/` uitrollen. De publieke site blijft zo statisch,
 en alleen mensen met schrijfrechten op de repo kunnen iets aanpassen.
 
+## Alternatief: Sveltia CMS (branch `sveltia-cms`)
+
+Op deze branch staat naast Keystatic ook [Sveltia CMS](https://sveltiacms.app) op
+`/admin/`. Beide bewerken dezelfde bestanden, zodat je ze naast elkaar kunt vergelijken.
+
+- **Lokaal:** open http://localhost:4321/admin/ in Chrome of Edge, klik *Work with
+  Local Repository* en kies de map van deze repo. Er is geen server nodig: de browser
+  schrijft direct naar de bestanden.
+- **Online:** de admin is een statische pagina en draait dus gewoon mee op de
+  site. Voor inloggen met GitHub is een kleine OAuth-helper nodig: deploy de
+  [Sveltia CMS Authenticator](https://github.com/sveltia/sveltia-cms-auth) (gratis
+  Cloudflare Worker) en zet de URL als `base_url` in `public/admin/config.yml`.
+- Config: `public/admin/config.yml`. De pagina zelf (knop- en YouTube-blokken plus
+  het `.mdoc`-formaat) staat in `src/pages/admin/index.astro`.
+
+Als de keuze gemaakt is, verwijder je de andere: voor Keystatic `public/admin/` en
+`src/pages/admin/`, voor Sveltia `keystatic.config.ts`, de `@keystatic/*` en
+`@astrojs/node` packages en de `withAdmin`-regels in `astro.config.mjs`.
+
 ## Migratie vanaf WordPress
 
 `npm run migrate` haalt alle pagina’s, posts, projecten, gereedschap en

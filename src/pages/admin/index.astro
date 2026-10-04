@@ -1,0 +1,65 @@
+---
+// Sveltia CMS admin. Lives here (not public/admin/index.html) so `astro dev` serves it at /admin/.
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>TkkrLab CMS</title>
+    <link rel="icon" href="/logo.png" type="image/png" />
+  </head>
+  <body>
+    <!-- Pinned version; bump deliberately. -->
+    <script is:inline src="https://unpkg.com/@sveltia/cms@0.227.4/dist/sveltia-cms.js"></script>
+    <script is:inline src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+    <script is:inline>
+      // Markdoc tags used in content; keep in sync with markdoc.config.mjs.
+      const attr = (s) => String(s ?? '').replace(/"/g, "'");
+
+      // Sveltia only allows `frontmatter` with .md/.markdown, so teach it .mdoc:
+      // YAML front matter + Markdoc body. CORE_SCHEMA keeps dates as plain strings.
+      CMS.registerCustomFormat('mdoc', 'mdoc', {
+        fromFile: (text) => {
+          const m = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+          if (!m) return { body: text };
+          const data = jsyaml.load(m[1], { schema: jsyaml.CORE_SCHEMA }) ?? {};
+          return { ...data, body: m[2].replace(/^\r?\n/, '') };
+        },
+        toFile: (data) => {
+          const { body = '', ...rest } = data;
+          const fm = Object.fromEntries(Object.entries(rest).filter(([, v]) => v !== undefined && v !== null && v !== ''));
+          const yaml = jsyaml.dump(fm, { schema: jsyaml.CORE_SCHEMA, lineWidth: -1 });
+          return `---\n${yaml}---\n\n${body.trim()}\n`;
+        },
+      });
+
+      CMS.registerEditorComponent({
+        id: 'button',
+        label: 'Knop',
+        icon: 'smart_button',
+        fields: [
+          { name: 'label', label: 'Tekst', widget: 'string' },
+          { name: 'href', label: 'Link', widget: 'string', hint: 'Bijv. /deelnemer-worden/ of https://…' },
+        ],
+        pattern: /^\{% button href="([^"]*)" label="([^"]*)" \/%\}$/m,
+        fromBlock: (m) => ({ href: m[1], label: m[2] }),
+        toBlock: (d) => `{% button href="${attr(d.href)}" label="${attr(d.label)}" /%}`,
+        toPreview: (d) => `<a href="${attr(d.href)}" style="display:inline-block;padding:.6em 1.2em;background:#ffe700;color:#111;border-radius:4px;text-decoration:none">${attr(d.label)}</a>`,
+      });
+
+      CMS.registerEditorComponent({
+        id: 'youtube',
+        label: 'YouTube video',
+        icon: 'smart_display',
+        fields: [{ name: 'id', label: 'Video ID', widget: 'string', hint: 'Het stukje na watch?v= in de YouTube-URL' }],
+        pattern: /^\{% youtube id="([^"]*)" \/%\}$/m,
+        fromBlock: (m) => ({ id: m[1] }),
+        toBlock: (d) => `{% youtube id="${attr(d.id)}" /%}`,
+        toPreview: (d) => `<img src="https://i.ytimg.com/vi/${attr(d.id)}/hqdefault.jpg" alt="YouTube ${attr(d.id)}" style="max-width:100%">`,
+      });
+    </script>
+  </body>
+</html>
