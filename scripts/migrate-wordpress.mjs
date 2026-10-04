@@ -90,11 +90,13 @@ async function tryDownload(url, dest) {
 // Downloads a WP upload into public/<dir>/<file>. For images we try the
 // original (without the -300x200 size suffix) first.
 async function localize(url, dir, filename) {
-  const key = `${url}|${dir}`;
+  const key = `${url}|${dir}|${filename ?? ""}`;
   if (downloaded.has(key)) return downloaded.get(key);
   const clean = url.split(/[?#]/)[0];
   const original = clean.replace(/-\d+x\d+(\.[a-z0-9]+)$/i, '$1');
-  const name = (filename ?? path.basename(original)).toLowerCase().replace(/[^a-z0-9._-]/g, '-');
+  // Keystatic names cover images `coverImage.<ext>` itself, so keep that casing exactly;
+  // on case-insensitive filesystems a mismatch makes Keystatic delete the file on save.
+  const name = filename ?? path.basename(original).toLowerCase().replace(/[^a-z0-9._-]/g, '-');
   const dest = path.join(ROOT, 'public', dir, name);
   const publicPath = `/${dir}/${name}`;
   let ok = false;

@@ -1,50 +1,79 @@
 heroTitle: Welkom bij TkkrLab
-heroImage: /images/home/hero.jpg
+heroImage: /images/home/heroImage.jpg
 heroButton:
   label: Kom langs
   href: /deelnemer-worden/
 sections:
   - title: De space
-    body: |-
-      Een hackerspace is een gemeenschapsgedreven werkruimte waar mensen met een passie voor technologie, programmeren, elektronica en maken samenkomen om te leren, te experimenteren en te creëren. Bij TkkrLab hebben we een breed scala aan tools en apparatuur beschikbaar, van 3D-printers en lasercutters tot soldeerstations en elektronica-componenten. Onze leden delen hun kennis en helpen elkaar bij het realiseren van persoonlijke en gemeenschappelijke projecten.
-    image: /images/home/de-space.jpg
+    body: >-
+      Een hackerspace is een gemeenschapsgedreven werkruimte waar mensen met een
+      passie voor technologie, programmeren, elektronica en maken samenkomen om
+      te leren, te experimenteren en te creëren. Bij TkkrLab hebben we een breed
+      scala aan tools en apparatuur beschikbaar, van 3D-printers en lasercutters
+      tot soldeerstations en elektronica-componenten. Onze leden delen hun
+      kennis en helpen elkaar bij het realiseren van persoonlijke en
+      gemeenschappelijke projecten.
+    image: /images/home/sections/0/image.jpg
     dark: false
     buttons:
       - label: Zie meer foto’s
         href: /de-space-fotos/
   - title: Gereedschap
-    body: |-
-      Een van de belangrijkste aspecten van een succesvolle hackerspace is de gemeenschap, maar bij TkkrLab hebben we ook een uitgebreide verzameling tools om onze deelnemers te helpen hun wilde ideeën werkelijkheid te maken. Of je nu werkt met metaal, hout of elektronica, wij hebben de apparatuur en faciliteiten om je project tot een succes te maken.
+    body: >-
+      Een van de belangrijkste aspecten van een succesvolle hackerspace is de
+      gemeenschap, maar bij TkkrLab hebben we ook een uitgebreide verzameling
+      tools om onze deelnemers te helpen hun wilde ideeën werkelijkheid te
+      maken. Of je nu werkt met metaal, hout of elektronica, wij hebben de
+      apparatuur en faciliteiten om je project tot een succes te maken.
+
 
       Alle machines worden door de deelnemers zelf onderhouden.
 
+
       Neem eens een kijkje bij al ons gereedschap.
-    image: /images/home/gereedschap.jpg
+    image: /images/home/sections/1/image.jpg
     dark: true
     buttons:
       - label: Gereedschap
         href: /gereedschap/
   - title: Locatie
-    body: |-
+    body: >-
       TkkrLab is gevestigd op:
 
+
       Marssteden 98,
+
       7547 TD Enschede.
 
-      We zijn gemakkelijk bereikbaar met zowel de fiets als met de auto. Kom gerust eens langs als we open zijn of neem contact met ons op voor een rondleiding. We kijken ernaar uit om je te verwelkomen!
-    image: /images/home/locatie.png
+
+      We zijn gemakkelijk bereikbaar met zowel de fiets als met de auto. Kom
+      gerust eens langs als we open zijn of neem contact met ons op voor een
+      rondleiding. We kijken ernaar uit om je te verwelkomen!
+    image: /images/home/sections/2/image.png
     dark: false
     buttons:
       - label: Rondleiding
         href: /deelnemer-worden/
   - title: Voor wie is het TkkrLab?
-    body: |-
+    body: >-
       TkkrLab is voor iedereen die dingen maakt, zowel fysiek als digitaal!
 
-      “TkkrLab heeft mij in contact gebracht met andere techniek enthousiastelingen en is door het voor-community-door-community concept een plaats geworden waar ik mijn creativiteit kwijt kan en waarmee ik mij verbonden voel. Het TkkrLab is voor mij de reden geweest om in Enschede te blijven na het afronden van mijn studie.” – Renze
 
-      “Tijdens mijn bezoek bij de opening van het Fablab werd mij duidelijk dat het buiten mijn budget lag om daar gerichte onderzoeken uit te voeren. Gelukkig kwam ik toen iemand tegen van TkkrLab waarmee het goed clickte. Zo geschiedde dat ik deelnemer werd en iedere zaterdag gezellig kan werken aan rare projecten: van 3D beeldhouwen en programmeerbare lampen, tot décor voor Live Action Role Playing evenementen. Al met al bijna 9 jaar lid.” – Govert
-    image: /images/home/voor-wie.png
+      “TkkrLab heeft mij in contact gebracht met andere techniek
+      enthousiastelingen en is door het voor-community-door-community concept
+      een plaats geworden waar ik mijn creativiteit kwijt kan en waarmee ik mij
+      verbonden voel. Het TkkrLab is voor mij de reden geweest om in Enschede te
+      blijven na het afronden van mijn studie.” – Renze
+
+
+      “Tijdens mijn bezoek bij de opening van het Fablab werd mij duidelijk dat
+      het buiten mijn budget lag om daar gerichte onderzoeken uit te voeren.
+      Gelukkig kwam ik toen iemand tegen van TkkrLab waarmee het goed clickte.
+      Zo geschiedde dat ik deelnemer werd en iedere zaterdag gezellig kan werken
+      aan rare projecten: van 3D beeldhouwen en programmeerbare lampen, tot
+      décor voor Live Action Role Playing evenementen. Al met al bijna 9 jaar
+      lid.” – Govert
+    image: /images/home/sections/3/image.png
     dark: true
     buttons:
       - label: Plan rondleiding
