@@ -45,6 +45,7 @@ collections:
     format: mdoc # custom format, registered in src/pages/admin/index.astro
     create: true
     slug: '{{slug}}'
+    preview_path: /blog/{{slug}}/
     summary: '{{title}} ({{date}})'
     sortable_fields: { fields: [date, title], default: { field: date, direction: descending } }
     media_folder: /public/images/posts/{{slug}}
@@ -58,6 +59,7 @@ collections:
     format: mdoc # custom format, registered in src/pages/admin/index.astro
     create: true
     slug: '{{slug}}'
+    preview_path: /projecten/{{slug}}/
     sortable_fields: { fields: [date, title], default: { field: date, direction: descending } }
     media_folder: /public/images/projects/{{slug}}
     public_folder: /images/projects/{{slug}}
@@ -70,6 +72,7 @@ collections:
     format: mdoc # custom format, registered in src/pages/admin/index.astro
     create: true
     slug: '{{slug}}'
+    preview_path: /gereedschap/{{slug}}/
     sortable_fields: { fields: [title], default: { field: title, direction: ascending } }
     media_folder: /public/images/tools/{{slug}}
     public_folder: /images/tools/{{slug}}
@@ -82,6 +85,7 @@ collections:
     format: mdoc # custom format, registered in src/pages/admin/index.astro
     create: true
     slug: '{{slug}}'
+    preview_path: /cybersaturdays/{{slug}}/
     media_folder: /public/images/cybersaturdays/{{slug}}
     public_folder: /images/cybersaturdays/{{slug}}
     fields: *dated_fields
@@ -93,6 +97,7 @@ collections:
     format: mdoc # custom format, registered in src/pages/admin/index.astro
     create: true
     slug: '{{slug}}'
+    preview_path: /{{slug}}/
     media_folder: /public/images/pages/{{slug}}
     public_folder: /images/pages/{{slug}}
     fields:

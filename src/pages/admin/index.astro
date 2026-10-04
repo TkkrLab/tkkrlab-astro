@@ -1,5 +1,6 @@
 ---
 // Sveltia CMS admin. Lives here (not public/admin/index.html) so `astro dev` serves it at /admin/.
+import previewCss from '../../styles/cms-preview.css?url';
 ---
 
 <!doctype html>
@@ -15,7 +16,7 @@
     <!-- Pinned version; bump deliberately. -->
     <script is:inline src="https://unpkg.com/@sveltia/cms@0.227.4/dist/sveltia-cms.js"></script>
     <script is:inline src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
-    <script is:inline>
+    <script is:inline define:vars={{ previewCss }}>
       // Markdoc tags used in content; keep in sync with markdoc.config.mjs.
       const attr = (s) => String(s ?? '').replace(/"/g, "'");
 
@@ -47,7 +48,7 @@
         pattern: /^\{% button href="([^"]*)" label="([^"]*)" \/%\}$/m,
         fromBlock: (m) => ({ href: m[1], label: m[2] }),
         toBlock: (d) => `{% button href="${attr(d.href)}" label="${attr(d.label)}" /%}`,
-        toPreview: (d) => `<a href="${attr(d.href)}" style="display:inline-block;padding:.6em 1.2em;background:#ffe700;color:#111;border-radius:4px;text-decoration:none">${attr(d.label)}</a>`,
+        toPreview: (d) => `<a class="btn" href="${attr(d.href)}">${attr(d.label)}</a>`,
       });
 
       CMS.registerEditorComponent({
@@ -60,6 +61,111 @@
         toBlock: (d) => `{% youtube id="${attr(d.id)}" /%}`,
         toPreview: (d) => `<img src="https://i.ytimg.com/vi/${attr(d.id)}/hqdefault.jpg" alt="YouTube ${attr(d.id)}" style="max-width:100%">`,
       });
+
+      // ---- Preview pane: render entries like the real site ------------------
+      // Mirrors src/layouts/Entry.astro, src/pages/[slug].astro and index.astro.
+      CMS.registerPreviewStyle(previewCss);
+
+      const formatDate = (s) => {
+        const d = new Date(s);
+        return isNaN(d) ? '' : d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+      };
+      const asset = (getAsset, path) => (path ? getAsset(path)?.url ?? path : null);
+
+      const entryPreview = (backLabel, showDate = true) =>
+        createClass({
+          render() {
+            const { entry, widgetFor, getAsset } = this.props;
+            const data = (k) => entry.getIn(['data', k]);
+            const cover = asset(getAsset, data('coverImage'));
+            return h(
+              'article',
+              { className: 'wrap pv-article' },
+              h('span', { className: 'pv-back' }, `← ${backLabel}`),
+              h('h1', {}, data('title')),
+              showDate && h('time', { className: 'pv-date' }, formatDate(data('date'))),
+              cover && h('img', { className: 'pv-cover', src: cover, alt: '' }),
+              h('div', { className: 'prose', style: { marginTop: '2rem' } }, widgetFor('body')),
+            );
+          },
+        });
+
+      CMS.registerPreviewTemplate('posts', entryPreview('Blog'));
+      CMS.registerPreviewTemplate('projects', entryPreview('Projecten'));
+      CMS.registerPreviewTemplate('tools', entryPreview('Werkplaats', false));
+      CMS.registerPreviewTemplate('cybersaturdays', entryPreview('Cybersaturdays'));
+
+      const listingLabels = { posts: 'blogberichten', projects: 'projecten', tools: 'gereedschap', cybersaturdays: 'Cybersaturdays' };
+      CMS.registerPreviewTemplate(
+        'pages',
+        createClass({
+          render() {
+            const { entry, widgetFor } = this.props;
+            const listing = entry.getIn(['data', 'listing']);
+            return h(
+              'div',
+              { className: 'wrap pv-page' },
+              h('h1', {}, entry.getIn(['data', 'title'])),
+              h('div', { className: 'prose' }, widgetFor('body')),
+              listingLabels[listing] && h('div', { className: 'pv-listing' }, `Hier komt automatisch het overzicht van alle ${listingLabels[listing]}.`),
+            );
+          },
+        }),
+      );
+
+      const paragraphs = (text) =>
+        String(text ?? '')
+          .split(/\n\s*\n/)
+          .map((p) => p.trim())
+          .filter(Boolean)
+          .map((p, i) => h('p', { key: i }, ...p.split('\n').flatMap((line, j) => (j ? [h('br', { key: j }), line] : [line]))));
+
+      CMS.registerPreviewTemplate(
+        'home',
+        createClass({
+          render() {
+            const { entry, getAsset } = this.props;
+            const data = entry.get('data').toJS?.() ?? {};
+            const heroImage = asset(getAsset, data.heroImage);
+            return h(
+              'div',
+              {},
+              h(
+                'section',
+                { className: 'pv-hero' },
+                heroImage && h('img', { src: heroImage, alt: '' }),
+                h(
+                  'div',
+                  { className: 'wrap' },
+                  h('p', { className: 'pv-kicker' }, 'Hackerspace Enschede'),
+                  h('h1', {}, data.heroTitle),
+                  data.heroButton?.label && h('a', { className: 'btn' }, data.heroButton.label),
+                ),
+              ),
+              ...(data.sections ?? []).map((s, i) => {
+                const img = asset(getAsset, s.image);
+                return h(
+                  'section',
+                  { key: i, className: `pv-split${s.dark ? ' dark' : ''}${i % 2 ? ' flip' : ''}` },
+                  h(
+                    'div',
+                    { className: 'wrap' },
+                    h(
+                      'div',
+                      {},
+                      h('h2', {}, s.title),
+                      ...paragraphs(s.body),
+                      (s.buttons ?? []).length > 0 &&
+                        h('div', { className: 'btn-row' }, ...s.buttons.map((b, j) => h('a', { key: j, className: j ? 'btn btn--ghost' : 'btn' }, b.label))),
+                    ),
+                    img && h('div', { className: 'pv-media' }, h('img', { src: img, alt: '' })),
+                  ),
+                );
+              }),
+            );
+          },
+        }),
+      );
     </script>
   </body>
 </html>

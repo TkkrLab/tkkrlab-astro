@@ -1,0 +1,148 @@
+/* Styles for the Sveltia CMS preview pane: the site's global styles plus
+   copies of the component-scoped rules the preview templates rely on
+   (Entry.astro, [slug].astro, index.astro). Keep roughly in sync. */
+@import './global.css';
+
+body {
+  padding-bottom: 3rem;
+}
+
+.pv-article {
+  padding-top: 2rem;
+}
+
+.pv-back {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.pv-article h1 {
+  font-family: var(--font-body);
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 600;
+  margin: 0.75rem 0 0.5rem;
+}
+
+.pv-date {
+  color: var(--muted);
+}
+
+.pv-cover {
+  max-width: var(--prose);
+  width: 100%;
+  max-height: 32rem;
+  object-fit: cover;
+  border-radius: var(--radius);
+  margin: 2rem 0;
+}
+
+.pv-page {
+  padding-top: 2rem;
+}
+
+.pv-page h1 {
+  margin: 0 0 1.5rem;
+}
+
+.pv-page h1::after {
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 4px;
+  margin-top: 1rem;
+  background: var(--yellow);
+}
+
+.pv-listing {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+  text-align: center;
+}
+
+/* Homepage */
+.pv-hero {
+  position: relative;
+  min-height: 26rem;
+  display: grid;
+  align-items: end;
+  color: #fff;
+  background: var(--ink-2);
+  overflow: hidden;
+}
+
+.pv-hero > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(0.15) brightness(0.62);
+}
+
+.pv-hero .wrap {
+  position: relative;
+  padding-block: 5rem 3rem;
+}
+
+.pv-kicker {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.8rem;
+  color: var(--yellow);
+  margin: 0;
+}
+
+.pv-hero h1 {
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  margin: 0.6rem 0 2rem;
+  max-width: 14ch;
+}
+
+.pv-split {
+  padding-block: 3.5rem;
+}
+
+.pv-split.dark {
+  background: var(--ink-2);
+  color: var(--paper);
+}
+
+.pv-split .wrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.pv-split.flip .pv-media {
+  order: -1;
+}
+
+.pv-split h2 {
+  margin-top: 0;
+}
+
+.pv-split h2::before {
+  content: '';
+  display: block;
+  width: 2.5rem;
+  height: 4px;
+  background: var(--yellow);
+  margin-bottom: 1.25rem;
+}
+
+.pv-media img {
+  width: 100%;
+  max-height: 28rem;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.pv-split.dark .btn--ghost {
+  color: var(--paper);
+}
