@@ -1,0 +1,67 @@
+---
+// Shared detail page for blog posts, projects, tools and Cybersaturdays.
+import { render, type CollectionEntry } from 'astro:content';
+import Base from './Base.astro';
+import { formatDate, routes, type DatedCollection } from '../lib/content';
+
+interface Props {
+  collection: DatedCollection;
+  entry: CollectionEntry<DatedCollection>;
+}
+const { collection, entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, date, excerpt, coverImage } = entry.data;
+const back = routes[collection];
+---
+
+<Base title={title} description={excerpt} image={coverImage}>
+  <article class="wrap">
+    <header>
+      <a class="back" href={back.base}>← {back.label}</a>
+      <h1>{title}</h1>
+      {collection !== 'tools' && <time datetime={date.toISOString()}>{formatDate(date)}</time>}
+    </header>
+    {coverImage && <img class="cover" src={coverImage} alt="" />}
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style>
+  article {
+    padding-top: 2.5rem;
+  }
+  header {
+    max-width: var(--prose);
+  }
+  .back {
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: var(--muted);
+  }
+  .back:hover {
+    color: var(--ink);
+  }
+  h1 {
+    font-family: var(--font-body);
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 600;
+    margin: 0.75rem 0 0.5rem;
+  }
+  time {
+    color: var(--muted);
+  }
+  .cover {
+    max-width: var(--prose);
+    width: 100%;
+    max-height: 32rem;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin: 2rem 0;
+  }
+  header + .prose {
+    margin-top: 2rem;
+  }
+</style>

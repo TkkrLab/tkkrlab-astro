@@ -1,0 +1,11 @@
+---
+import { getCollection } from 'astro:content';
+import Entry from '../../layouts/Entry.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('cybersaturdays');
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+---
+
+<Entry collection="cybersaturdays" entry={Astro.props.entry} />

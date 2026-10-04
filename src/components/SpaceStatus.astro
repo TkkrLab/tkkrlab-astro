@@ -1,0 +1,84 @@
+---
+// Live open/closed state from the SpaceAPI, fetched in the browser so it is
+// always current even though the site itself is static.
+interface Props {
+  url?: string;
+}
+const { url } = Astro.props;
+---
+
+{
+  url && (
+    <a class="status" href="/deelnemer-worden/" data-spaceapi={url} data-state="unknown">
+      <span class="dot" aria-hidden="true" />
+      <span class="label">Status</span>
+    </a>
+  )
+}
+
+<script>
+  const el = document.querySelector<HTMLElement>('[data-spaceapi]');
+  if (el) {
+    fetch(el.dataset.spaceapi!, { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((api) => {
+        const open = api?.state?.open === true;
+        el.dataset.state = open ? 'open' : 'closed';
+        el.querySelector('.label')!.textContent = open ? 'Nu open' : 'Gesloten';
+        const since = api?.state?.lastchange;
+        if (since) {
+          const t = new Date(since * 1000).toLocaleString('nl-NL', {
+            weekday: 'short',
+            hour: '2-digit',
+            minute: '2-digit',
+          });
+          el.title = `${open ? 'Open' : 'Dicht'} sinds ${t}`;
+        }
+      })
+      .catch(() => el.remove());
+  }
+</script>
+
+<style>
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid rgb(255 255 255 / 0.35);
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: #888;
+  }
+  [data-state='open'] .dot {
+    background: #3ddc65;
+    box-shadow: 0 0 0 0 rgb(61 220 101 / 0.7);
+    animation: pulse 2s infinite;
+  }
+  [data-state='closed'] .dot {
+    background: #e5484d;
+  }
+  @keyframes pulse {
+    70% {
+      box-shadow: 0 0 0 0.5rem rgb(61 220 101 / 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgb(61 220 101 / 0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dot {
+      animation: none !important;
+    }
+  }
+</style>

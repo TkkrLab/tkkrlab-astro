@@ -1,0 +1,43 @@
+---
+// Plain pages (Info, Huisregels, …). Pages with `listing` set also act as the
+// overview for that collection, e.g. /blog/ and /gereedschap/.
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import CardGrid from '../components/CardGrid.astro';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages.map((page) => ({ params: { slug: page.id }, props: { page } }));
+}
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+const { title, description, listing } = page.data;
+---
+
+<Base title={title} description={description}>
+  <div class="wrap page">
+    <h1>{title}</h1>
+    <div class="prose">
+      <Content />
+    </div>
+    {listing !== 'none' && <CardGrid collection={listing} />}
+  </div>
+</Base>
+
+<style>
+  .page {
+    padding-top: 2.5rem;
+  }
+  h1 {
+    margin: 0 0 1.5rem;
+  }
+  h1::after {
+    content: '';
+    display: block;
+    width: 3rem;
+    height: 4px;
+    margin-top: 1rem;
+    background: var(--yellow);
+  }
+</style>

@@ -1,0 +1,84 @@
+---
+import { getSettings } from '../lib/content';
+const settings = await getSettings();
+---
+
+<footer class="site-footer">
+  <div class="wrap grid">
+    <div>
+      <a href="/" class="logo"><img src="/logo.png" alt="TkkrLab" width="56" height="63" /></a>
+      <p class="tag">Hackerspace Enschede</p>
+    </div>
+    <div>
+      <h2>Adres</h2>
+      <address>
+        {settings.address.split('\n').map((line) => <>{line}<br /></>)}
+      </address>
+      {settings.email && <p><a href={`mailto:${settings.email}`}>{settings.email}</a></p>}
+      {settings.phone && <p><a href={`tel:${settings.phone.replace(/[^\d+]/g, '')}`}>{settings.phone}</a></p>}
+    </div>
+    <div>
+      <h2>Volg ons</h2>
+      <ul>
+        {settings.socials.map((s) => <li><a href={s.href} rel="me noopener">{s.label}</a></li>)}
+        <li><a href="/rss.xml">RSS</a></li>
+      </ul>
+    </div>
+    <div class="cta">
+      <a class="btn" href="/deelnemer-worden/">Plan rondleiding</a>
+      {settings.newsletterUrl && <a class="btn btn--ghost" href={settings.newsletterUrl} rel="noopener">Nieuwsbrief</a>}
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink-2);
+    color: var(--paper);
+    padding-block: 3.5rem 4rem;
+    margin-top: 5rem;
+    font-size: 1rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 2.5rem;
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin: 0 0 0.9rem;
+  }
+  address {
+    font-style: normal;
+  }
+  p {
+    margin: 0.4rem 0;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    columns: 2;
+  }
+  li {
+    padding-block: 0.15rem;
+  }
+  .tag {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    opacity: 0.7;
+    margin-top: 0.8rem;
+  }
+  .cta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+</style>

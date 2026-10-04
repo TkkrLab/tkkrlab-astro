@@ -1,0 +1,47 @@
+navigation:
+  - label: Projecten
+    href: /projecten/
+    children: []
+  - label: Blog
+    href: /blog/
+    children: []
+  - label: Werkplaats
+    href: /gereedschap/
+    children: []
+  - label: Info
+    href: /info/
+    children:
+      - label: Huisregels
+        href: /huisregels/
+      - label: De space – Foto’s
+        href: /de-space-fotos/
+      - label: Testimonies
+        href: /testimonies/
+      - label: Cybersaturdays
+        href: /cybersaturdays/
+      - label: Contact & FAQ
+        href: /contact-faq/
+  - label: Deelnemer worden
+    href: /deelnemer-worden/
+    children: []
+address: |-
+  Marssteden Poort
+  Marssteden 98
+  7547 TD Enschede
+email: bestuur@tkkrlab.nl
+phone: 053-2030532
+newsletterUrl: https://tkkrlab.us4.list-manage.com/subscribe?u=06a95a306a739faf5a25f16de&id=d4aa86857f
+socials:
+  - label: Telegram
+    href: https://t.me/+SGblPyxVHpI_SBO2
+  - label: GitHub
+    href: https://github.com/tkkrlab
+  - label: Mastodon
+    href: https://hsnl.social/@tkkrlab
+  - label: YouTube
+    href: https://www.youtube.com/TkkrLab
+  - label: Instagram
+    href: https://www.instagram.com/tkkrlab/
+  - label: LinkedIn
+    href: https://www.linkedin.com/company/tkkrlab/
+spaceApiUrl: https://spaceapi.tkkrlab.nl/

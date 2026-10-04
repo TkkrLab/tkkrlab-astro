@@ -1,0 +1,69 @@
+---
+// Privacy-friendly embed: nothing loads from YouTube until someone clicks play.
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+---
+
+<div class="yt">
+  <a href={`https://www.youtube.com/watch?v=${id}`} data-yt={id} aria-label="Video afspelen op YouTube">
+    <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" loading="lazy" referrerpolicy="no-referrer" />
+    <span class="play" aria-hidden="true">▶</span>
+  </a>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('.yt a[data-yt]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${a.dataset.yt}?autoplay=1`;
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      iframe.title = 'YouTube video';
+      a.replaceWith(iframe);
+    });
+  });
+</script>
+
+<style>
+  .yt {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-block: 1.5rem;
+  }
+  .yt a,
+  .yt :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .yt img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: 0;
+    opacity: 0.85;
+  }
+  .play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 4.5rem;
+    height: 3.2rem;
+    display: grid;
+    place-items: center;
+    background: var(--yellow);
+    color: var(--ink);
+    border-radius: 0.6rem;
+    font-size: 1.4rem;
+  }
+  .yt a:hover .play {
+    transform: scale(1.06);
+  }
+</style>
