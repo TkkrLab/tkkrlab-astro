@@ -7,14 +7,14 @@ import keystatic from '@keystatic/astro';
 import node from '@astrojs/node';
 import redirects from './src/data/redirects.json' with { type: 'json' };
 
-// The public site is fully static. The Keystatic admin (/keystatic) needs a
-// server, so it is only included in dev, or in a build with KEYSTATIC=true
-// (e.g. a small Node container that editors log into with GitHub).
+// The public site is prerendered; only /oauth/* (Sveltia's GitHub sign-in) runs on
+// the Node server. The Keystatic admin (/keystatic) is only included in dev, or in
+// a build with KEYSTATIC=true.
 const withAdmin = process.env.KEYSTATIC === 'true' || process.argv.includes('dev');
 
 export default defineConfig({
   site: 'https://tkkrlab.nl',
   redirects,
   integrations: [react(), markdoc(), sitemap(), ...(withAdmin ? [keystatic()] : [])],
-  adapter: withAdmin ? node({ mode: 'standalone' }) : undefined,
+  adapter: node({ mode: 'standalone' }),
 });

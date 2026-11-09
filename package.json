@@ -22,7 +22,8 @@
     "@keystatic/core": "^0.6.9",
     "astro": "^7.3.5",
     "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react-dom": "^19.3.0",
+    "sveltia-cms-auth": "https://codeload.github.com/sveltia/sveltia-cms-auth/tar.gz/7c34594cfef8c314c0b79d30157b80a3f8af1ca3"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",

@@ -1,0 +1,44 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+# Rapid CMS saves must not finish out of order and roll the site back.
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build and push image
+        env:
+          TOKEN: ${{ github.token }}
+        run: |
+          # Greybull needs a lowercase path and a unique tag per build.
+          image="ghcr.io/${GITHUB_REPOSITORY,,}:$GITHUB_SHA"
+          echo "$TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          docker build -t "$image" .
+          docker push "$image"
+          echo "IMAGE=$image" >> "$GITHUB_ENV"
+
+      # Skipped until the Greybull app exists: the first run only publishes the image.
+      - name: Roll out on Greybull
+        if: vars.GREYBULL_APP != ''
+        env:
+          GREYBULL_API_KEY: ${{ secrets.GREYBULL_API_KEY }}
+          GREYBULL_APP: ${{ vars.GREYBULL_APP }}
+        run: |
+          curl -fsS -X POST "https://dash.greybull.cloud/api/v1/apps/$GREYBULL_APP/deploy" \
+            -H "X-API-Key: $GREYBULL_API_KEY" \
+            -H 'Content-Type: application/json' \
+            -d "{\"image\":\"$IMAGE\"}"

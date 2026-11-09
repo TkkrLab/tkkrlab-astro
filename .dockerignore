@@ -1,0 +1,7 @@
+.git
+.astro
+.env
+.env.*
+.DS_Store
+dist
+node_modules
