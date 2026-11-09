@@ -7,15 +7,16 @@ backend:
   repo: TkkrLab/tkkrlab-astro
   branch: main
   # GitHub sign-in: src/pages/oauth/[action].js
-  base_url: https://tkkrlab.nl
+  # shortcut: hostname of the trial container; change here and below when the site moves to its own domain.
+  base_url: https://tkkrlab-web-info-6.apps.greybull.cloud
   auth_endpoint: oauth/authorize
   auth_scope: public_repo # de repo is publiek; geen toegang tot privé-repo's van redacteuren
 
 media_folder: /public/images
 public_folder: /images
 
-site_url: https://tkkrlab.nl
-display_url: https://tkkrlab.nl
+site_url: https://tkkrlab-web-info-6.apps.greybull.cloud
+display_url: https://tkkrlab-web-info-6.apps.greybull.cloud
 locale: nl
 
 slug:

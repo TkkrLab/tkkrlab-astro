@@ -67,9 +67,9 @@ The admin at `/admin/` ships with the site, and GitHub sign-in goes through
 `/oauth/*` (`src/pages/oauth/[action].js`, using the
 [Sveltia CMS Authenticator](https://github.com/sveltia/sveltia-cms-auth)). To set it
 up, create a GitHub OAuth App with the callback URL
-`https://tkkrlab.nl/oauth/redirect`, then set `GITHUB_CLIENT_ID`,
-`GITHUB_CLIENT_SECRET` and `ALLOWED_DOMAINS=tkkrlab.nl` in the container's
-environment.
+`https://<site hostname>/oauth/redirect`, set `GITHUB_CLIENT_ID`,
+`GITHUB_CLIENT_SECRET` and `ALLOWED_DOMAINS=<site hostname>` in the container's
+environment, and point `base_url` in `public/admin/config.yml` at the same hostname.
 
 Every save is a commit, so only people with write access to the repo can change
 anything.
