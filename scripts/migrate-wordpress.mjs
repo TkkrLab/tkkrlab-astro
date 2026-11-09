@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 // One-off migration: pulls all content from the WordPress REST API of
-// tkkrlab.nl and writes it as Keystatic-compatible Markdoc files.
+// tkkrlab.nl and writes it as Markdoc files.
 //
 //   node scripts/migrate-wordpress.mjs [--base https://www.tkkrlab.nl]
 //
 // Re-running overwrites migrated files, so only do that before people
-// start editing in Keystatic.
+// start editing in the CMS.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import TurndownService from 'turndown';
@@ -94,8 +94,7 @@ async function localize(url, dir, filename) {
   if (downloaded.has(key)) return downloaded.get(key);
   const clean = url.split(/[?#]/)[0];
   const original = clean.replace(/-\d+x\d+(\.[a-z0-9]+)$/i, '$1');
-  // Keystatic names cover images `coverImage.<ext>` itself, so keep that casing exactly;
-  // on case-insensitive filesystems a mismatch makes Keystatic delete the file on save.
+  // Cover images are stored as `coverImage.<ext>`, so keep that casing exactly.
   const name = filename ?? path.basename(original).toLowerCase().replace(/[^a-z0-9._-]/g, '-');
   const dest = path.join(ROOT, 'public', dir, name);
   const publicPath = `/${dir}/${name}`;

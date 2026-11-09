@@ -1,11 +1,7 @@
-import { createReader } from '@keystatic/core/reader';
-import { getCollection, type CollectionEntry } from 'astro:content';
-import keystaticConfig from '../../keystatic.config';
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 
-const reader = createReader(process.cwd(), keystaticConfig);
-
-export const getSettings = async () => (await reader.singletons.settings.readOrThrow());
-export const getHome = async () => (await reader.singletons.home.readOrThrow());
+export const getSettings = async () => (await getEntry('settings', 'settings'))!.data;
+export const getHome = async () => (await getEntry('home', 'home'))!.data;
 
 export type DatedCollection = 'posts' | 'projects' | 'tools' | 'cybersaturdays';
 

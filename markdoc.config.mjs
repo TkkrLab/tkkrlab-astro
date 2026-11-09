@@ -1,6 +1,6 @@
 import { defineMarkdocConfig, component } from '@astrojs/markdoc/config';
 
-// Keep these tags in sync with `components` in keystatic.config.ts.
+// Keep these tags in sync with the editor components in src/pages/admin/index.astro.
 export default defineMarkdocConfig({
   tags: {
     button: {
