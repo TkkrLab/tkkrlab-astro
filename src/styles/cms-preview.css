@@ -143,6 +143,3 @@ body {
   border-radius: var(--radius);
 }
 
-.pv-split.dark .btn--ghost {
-  color: var(--paper);
-}
